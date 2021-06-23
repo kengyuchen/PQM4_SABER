@@ -19,9 +19,9 @@ void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t
 		{
 #ifdef NTT
 			if (transpose == 1){
-				poly_mul_acc_NTT_layer_no_inv(A[j][i], s[j], sum[i], 7);
+				poly_mul_acc_NTT_layer_no_inv(A[j][i], s[j], sum[i], 5);
 			} else{
-				poly_mul_acc_NTT_layer_no_inv(A[i][j], s[j], sum[i], 7);
+				poly_mul_acc_NTT_layer_no_inv(A[i][j], s[j], sum[i], 5);
 			}
 #else
 			if (transpose == 1){
@@ -32,7 +32,7 @@ void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t
 #endif
 		}
 #ifdef NTT
-		poly_mul_acc_NTT_layer_inv(sum[i], res[i], 7);
+		poly_mul_acc_NTT_layer_inv(sum[i], res[i], 5);
 #endif	
 	}
 }
@@ -44,9 +44,9 @@ void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SAB
 	int64_t sum[SABER_N] = {0};
 	for (j = 0; j < SABER_L; j++)
 	{
-		poly_mul_acc_NTT_layer_no_inv(b[j], s[j], sum, 7);
+		poly_mul_acc_NTT_layer_no_inv(b[j], s[j], sum, 5);
 	}
-	poly_mul_acc_NTT_layer_inv(sum, res, 7);
+	poly_mul_acc_NTT_layer_inv(sum, res, 5);
 #else
 	for (j = 0; j < SABER_L; j++)
 	{

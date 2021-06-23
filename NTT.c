@@ -217,7 +217,7 @@ void poly_mul_acc_NTT_inv(const int64_t result_t[SABER_N], uint16_t* res){
     	}
     }
     for (int i = 0; i < SABER_N; i++){
-        res[i] = (uint16_t)result[i];
+        res[i] += (uint16_t)result[i];
     }
 }
 
@@ -238,16 +238,47 @@ void base_multiplication_layer(int64_t *result_t, int64_t *at, int64_t *bt, cons
 	} else if (layer == 6){
     	for (int i = 0; i < SABER_N; i += 8){
 	    	int32_t xi = root_table[bit_reverse[32 + i/8]];
-	    	result_t[i] = (at[i]*bt[i] + ((at[i+1]*bt[i+3] + at[i+3]*bt[i+1] + at[i+2]*bt[i+2]) % Q)*xi) % Q;
-	    	result_t[i+1] = (at[i]*bt[i+1] + at[i+1]*bt[i] + ((at[i+2]*bt[i+3] + at[i+3]*bt[i+2]) % Q)*xi) % Q;
-	    	result_t[i+2] = (at[i]*bt[i+2] + at[i+1]*bt[i+1] + at[i+2]*bt[i] + ((at[i+3]*bt[i+3]) % Q)*xi) % Q;
-	    	result_t[i+3] = (at[i]*bt[i+3] + at[i+1]*bt[i+2] + at[i+2]*bt[i+1] + at[i+3]*bt[i]) % Q;
+	    	int64_t result_low[8] = {0}, result_high[8] = {0};
+	    	for (int j = 0; j < 4; j++){
+		        for (int k = 0; k < 4; k++){
+		            result_low[j+k] += at[i+j]*bt[i+k]%Q;
+		        }
+		    }
+		    for (int j = 4; j < 8; j++){
+		    	result_t[i+j-4] = (result_low[j-4] + (result_low[j] % Q) * xi) % Q;
+		    }
 
-	    	result_t[i+4] = (at[i+4]*bt[i+4] - ((at[i+5]*bt[i+7] + at[i+7]*bt[i+5] + at[i+6]*bt[i+6]) % Q)*xi) % Q;
-	    	result_t[i+5] = (at[i+4]*bt[i+5] + at[i+5]*bt[i+4] - ((at[i+6]*bt[i+7] + at[i+7]*bt[i+6]) % Q)*xi) % Q;
-	    	result_t[i+6] = (at[i+4]*bt[i+6] + at[i+5]*bt[i+5] + at[i+6]*bt[i+4] - ((at[i+7]*bt[i+7]) % Q)*xi) % Q;
-	    	result_t[i+7] = (at[i+4]*bt[i+7] + at[i+5]*bt[i+6] + at[i+6]*bt[i+5] + at[i+7]*bt[i+4]) % Q;
+		    for (int j = 0; j < 4; j++){
+		        for (int k = 0; k < 4; k++){
+		            result_high[j+k] += at[i+j+4]*bt[i+k+4]%Q;
+		        }
+		    }
+		    for (int j = 4; j < 8; j++){
+		    	result_t[i+j] = (result_high[j-4] - (result_high[j] % Q) * xi) % Q;
+		    }
 	    }
+	} else if (layer == 5){
+		for (int i = 0; i < SABER_N; i += 16){
+			int32_t xi = root_table[bit_reverse[16 + i/16]];
+			int64_t result_low[16] = {0}, result_high[16] = {0};
+			for (int j = 0; j < 8; j++){
+		        for (int k = 0; k < 8; k++){
+		            result_low[j+k] += at[i+j]*bt[i+k];
+		        }
+		    }
+		    for (int j = 8; j < 16; j++){
+		    	result_t[i+j-8] += (result_low[j-8] + (result_low[j] % Q) * xi) % Q;
+		    }
+
+		    for (int j = 0; j < 8; j++){
+		        for (int k = 0; k < 8; k++){
+		            result_high[j+k] += at[i+j+8]*bt[i+k+8];
+		        }
+		    }
+		    for (int j = 8; j < 16; j++){
+		    	result_t[i+j] += (result_high[j-8] - (result_high[j] % Q) * xi) % Q;
+		    }
+		}
 	}
 }
 
@@ -382,7 +413,7 @@ void poly_mul_acc_NTT_layer_no_inv(const uint16_t a[SABER_N], const uint16_t b[S
     int16_t a_mod[SABER_N], b_mod[SABER_N];
     int64_t at[SABER_N] = {0};
     int64_t bt[SABER_N] = {0};
-    // int64_t result_t[SABER_N] = {0};
+    //int64_t result_t[SABER_N] = {0};
 
     for (int i = 0; i < SABER_N; i++){
     	a_mod[i] = a[i] % 8192;
@@ -417,7 +448,7 @@ void poly_mul_acc_NTT_layer_inv(const int64_t result_t[SABER_N], uint16_t* res, 
     	}
     }
     for (int i = 0; i < SABER_N; i++){
-        res[i] = (uint16_t)result[i];
+        res[i] += (uint16_t)result[i];
     }
 }
 
