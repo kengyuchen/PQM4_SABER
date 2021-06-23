@@ -1,18 +1,11 @@
 # set these values to TRUE to use NTT multiplication
 NTT = TRUE
-INCOMPLETE = TRUE
 
 CC 		  = /usr/bin/gcc
 ifeq ($(NTT), TRUE)
-ifeq ($(INCOMPLETE), TRUE)
-CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
-	-O3 -D NTT -D INCOMPLETE -fomit-frame-pointer -march=native
-NISTFLAGS  = -Wno-unused-result -O3 -D NTT -D INCOMPLETE -fomit-frame-pointer -march=native -std=c99 
-else
 CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
 	-O3 -D NTT -fomit-frame-pointer -march=native
 NISTFLAGS  = -Wno-unused-result -O3 -D NTT -fomit-frame-pointer -march=native -std=c99 
-endif
 else
 CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
 	-O3 -fomit-frame-pointer -march=native

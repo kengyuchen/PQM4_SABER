@@ -8,6 +8,7 @@
 */
 #define Q 25166081 // 196610 * 128 + 1
 #define inv_2 12583041 // inverse of 2 mod Q
+#define inv_32 24379641 // inverse of 32 mod Q
 #define inv_64 24772861 // inverse of 64 mod Q
 #define inv_128 -196610 // inverse of 128 mod Q
 #define Zeta 1708789
@@ -100,11 +101,12 @@ void poly_mul_acc_NTT_no_inv(const uint16_t a[SABER_N], const uint16_t b[SABER_N
 void poly_mul_acc_NTT_inv(const int64_t result_t[SABER_N], uint16_t* res);
 
 // Incomplete NTT
-void NTT_forward_6_layer(int64_t *out, const int16_t *in);
-void NTT_inv_6_layer(int16_t *out, const int64_t *in);
-void poly_mul_acc_NTT_6_layer(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N]);
-void poly_mul_acc_NTT_6_layer_no_inv(const uint16_t a[SABER_N], const uint16_t b[SABER_N], int64_t* result_t);
-void poly_mul_acc_NTT_6_layer_inv(const int64_t result_t[SABER_N], uint16_t* res);
+void base_multiplication_layer(int64_t *result_t, int64_t *at, int64_t *bt, const int layer);
+void NTT_forward_layer(int64_t *out, const int16_t *in, const int layer);
+void NTT_inv_layer(int16_t *out, const int64_t *in, const int layer);
+void poly_mul_acc_NTT_layer(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N], const int layer);
+void poly_mul_acc_NTT_layer_no_inv(const uint16_t a[SABER_N], const uint16_t b[SABER_N], int64_t* result_t, const int layer);
+void poly_mul_acc_NTT_layer_inv(const int64_t result_t[SABER_N], uint16_t* res, const int layer);
 
 
 // Just for debug print
