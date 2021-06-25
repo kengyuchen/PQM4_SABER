@@ -6,15 +6,16 @@ All codes are modified from [pqm4](https://github.com/mupq/pqm4) and [NIST Round
 I collaborated this project with [Gting6](https://github.com/gting6). Much of the work is completed with him.
 
 # Works
-Saber uses polynomial multiplication in $Z_8192[x]/(x^256+1)$. Reference codes uses Toom-Cook 4way + Karatsuba trick. In this project we use NTT trick.
-Multiplication are used in two places:
-  *`MatrixVectorMul`*: Multiply a matrix with a vector
-  *`InnerProd`*: Compute inner product
-Each entry in the matrix and vector is a polynomial in $Z_8192[x]/(x^256+1)$.
+Saber uses polynomial multiplication in $Z_{8192}[x]/(x^{256}+1)$. Reference codes uses Toom-Cook 4way + Karatsuba trick. In this project we use NTT trick.
+Multiplications are used in two places:
+* `MatrixVectorMul`*: Multiply a matrix with a vector
+* `InnerProd`*: Compute inner product
+
+Each entry in the matrix and vector is a polynomial in $Z_{8192}[x]/(x^{256}+1)$.
 
 ## NTT
-$Z_8192[x]/(x^256+1)$ is an unfriendly ring for NTT, so we change modulo ring to $Z_Q[x]/(x^256+1)$, where Q = 25166081.
-There is no primitive root of -1 in $Z_Q[x]/(x^256+1)$, but there is a root $\xi=1708789$ such that $\xi^{128}=-1$.
+$Z_{8192}[x]/(x^{256}+1)$ is an unfriendly ring for NTT, so we change modulo ring to $Z_Q[x]/(x^{256}+1)$, where Q = 25166081.
+There is no primitive root of -1 in $Z_Q[x]/(x^{256}+1)$, but there is a root $\xi=1708789$ such that $\xi^{128}=-1$.
 Therefore we can perform incomplete NTT with layer <= 7; we provide incomplete NTT with layer 5, 6, 7 in this package.
 
 ### Karatsuba
@@ -37,7 +38,7 @@ make
 The result program is in `test/` folder, one can see the result by
 ```bash=
 ./test/test_kex
-```bash
+```
 If all go well, cycles for each stage(keypair, encaps, and decaps) are shown.
 If there is logical error in the code, error message will occur.
 ```bash=
