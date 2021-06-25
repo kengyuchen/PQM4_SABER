@@ -108,8 +108,6 @@ static void karatsuba_simple(const uint16_t *a_1, const uint16_t *b_1, uint16_t 
 
 }
 
-
-
 static void toom_cook_4way (const uint16_t *a1, const uint16_t *b1, uint16_t *result) {
     uint16_t inv3 = 43691, inv9 = 36409, inv15 = 61167;
 
@@ -243,7 +241,6 @@ void schoolbook_mul(const uint16_t *a1, const uint16_t *b1, uint16_t *result){
     return;
 }
 
-
 /* res += a*b */
 
 void poly_mul_acc(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N])
@@ -252,7 +249,6 @@ void poly_mul_acc(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t
 	int i;
 
 	toom_cook_4way(a, b, c);
-    //schoolbook_mul(a, b, c);
 
 	/* reduction */
 	for (i = SABER_N; i < 2 * SABER_N; i++)

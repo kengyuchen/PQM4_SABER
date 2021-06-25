@@ -13,6 +13,8 @@
 #define inv_128 -196610 // inverse of 128 mod Q
 #define Zeta 1708789
 
+#define NTT_layers 7 // Layer of Incomplete NTT
+
 /*
 	We need to find primitive root of -1 in Z_Q mod (X^256 + 1).
 	Z_Q mod (X^256 + 1) has a prinitive root Zeta of -1 with order 128.
@@ -101,7 +103,6 @@ void poly_mul_acc_NTT_no_inv(const uint16_t a[SABER_N], const uint16_t b[SABER_N
 void poly_mul_acc_NTT_inv(const int64_t result_t[SABER_N], uint16_t* res);
 
 // Incomplete NTT
-void base_multiplication_layer(int64_t *result_t, int64_t *at, int64_t *bt, const int layer);
 void NTT_forward_layer(int64_t *out, const int16_t *in, const int layer);
 void NTT_inv_layer(int16_t *out, const int64_t *in, const int layer);
 void poly_mul_acc_NTT_layer(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N], const int layer);

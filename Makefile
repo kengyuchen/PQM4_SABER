@@ -1,4 +1,4 @@
-# set these values to TRUE to use NTT multiplication
+# set this value to TRUE to use NTT multiplication
 NTT = TRUE
 
 CC 		  = /usr/bin/gcc
@@ -20,8 +20,8 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/kem \
 
-SOURCES = pack_unpack.c poly.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c NTT.c
-HEADERS = SABER_params.h pack_unpack.h poly.h rng.h fips202.h verify.h cbd.h SABER_indcpa.h NTT.h
+SOURCES = pack_unpack.c poly.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c NTT.c base_multiplication.c
+HEADERS = SABER_params.h pack_unpack.h poly.h rng.h fips202.h verify.h cbd.h SABER_indcpa.h
 
 test/test_kex: $(SOURCES) $(HEADERS) rng.o test/test_kex.c
 	$(CC) $(CFLAGS) -o $@ $(SOURCES) rng.o test/test_kex.c -lcrypto
