@@ -8,8 +8,8 @@ I collaborated this project with [Gting6](https://github.com/gting6). Much of th
 # Works
 Saber uses polynomial multiplication in $Z_{8192}[x]/(x^{256}+1)$. Reference codes uses Toom-Cook 4way + Karatsuba trick. In this project we use NTT trick.
 Multiplications are used in two places:
-* `MatrixVectorMul`*: Multiply a matrix with a vector
-* `InnerProd`*: Compute inner product
+* `MatrixVectorMul`: Multiply a matrix with a vector
+* `InnerProd`: Compute inner product
 
 Each entry in the matrix and vector is a polynomial in $Z_{8192}[x]/(x^{256}+1)$.
 
