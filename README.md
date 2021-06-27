@@ -44,3 +44,37 @@ If there is logical error in the code, error message will occur.
 ```bash=
 ----- ERR CCA KEM ------
 ```
+
+## Parameter
+
+### NTT
+
+To enable/disable NTT algorithm, open `Makefile` and set the parameter `NTT` to TRUE:
+
+```make
+# Set this value to TRUE to use NTT multiplication
+NTT = TRUE
+```
+
+Default is enabled.
+
+### Karatsuba
+
+Choose schoolbook or Karatsuba algorithm to be used in NTT base multiplication by modifying `base_multiplication.c`:
+
+```c
+// Define whether to use Karatsuba algorithm
+#define Karatsuba
+```
+
+### Reduction
+
+To enable/disable Montgomery Reduction algorithm used in NTT algorithm, open `Makefile` and set the parameter `Mont_reduce` to TRUE:
+
+```ma
+# Set this value to TRUE to use Montgomery Reduction in NTT
+Mont_reduce = TRUE
+```
+
+
+
