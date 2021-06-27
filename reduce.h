@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include "SABER_params.h"
 
-#define Q_INV 4253089537
+#define Q 25166081
+#define Q_INV 4253089537 // Q_INV = Q^-1 mod R
+#define R 16733526 // R = 2^32 mod Q
 
-// int64_t barrett_reduce(int64_t a);
 int64_t montgomery_reduce(const int64_t a);
-// int64_t normal_reduce(const int64_t a);

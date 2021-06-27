@@ -11,8 +11,7 @@
 void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t s[SABER_L][SABER_N], uint16_t res[SABER_L][SABER_N], int16_t transpose)
 {
 	int i, j;
-	int64_t sum[SABER_L][SABER_N];
-	memset(sum, 0, sizeof sum);
+	int32_t sum[SABER_L][SABER_N] = {{0}};
 	for (i = 0; i < SABER_L; i++)
 	{
 		for (j = 0; j < SABER_L; j++)
@@ -41,7 +40,7 @@ void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SAB
 {
 	int j;
 #ifdef NTT
-	int64_t sum[SABER_N] = {0};
+	int32_t sum[SABER_N] = {0};
 	for (j = 0; j < SABER_L; j++)
 	{
 		poly_mul_acc_NTT_layer_no_inv(b[j], s[j], sum, NTT_layers);

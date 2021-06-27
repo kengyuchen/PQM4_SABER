@@ -1,15 +1,23 @@
-# set this value to TRUE to use NTT multiplication
+# Set this value to TRUE to use NTT multiplication
 NTT = TRUE
+# Set this value to TRUE to use Montgomery Reduction in NTT
+Mont_reduce = TRUE
 
 CC 		  = /usr/bin/gcc
 ifeq ($(NTT), TRUE)
-CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
-	-O3 -D NTT -fomit-frame-pointer -march=native
-NISTFLAGS  = -Wno-unused-result -O3 -D NTT -fomit-frame-pointer -march=native -std=c99 
+	ifeq ($(Mont_reduce), TRUE)
+		CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
+			-O3 -D NTT -D Mont_reduce -fomit-frame-pointer -march=native
+		NISTFLAGS  = -Wno-unused-result -O3 -D NTT -D Mont_reduce -fomit-frame-pointer -march=native -std=c99 
+	else
+		CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
+			-O3 -D NTT -fomit-frame-pointer -march=native
+		NISTFLAGS  = -Wno-unused-result -O3 -D NTT -fomit-frame-pointer -march=native -std=c99
+	endif
 else
-CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
-	-O3 -fomit-frame-pointer -march=native
-NISTFLAGS  = -Wno-unused-result -O3 -fomit-frame-pointer -march=native -std=c99 
+	CFLAGS  = -Wall -Wextra -Wmissing-prototypes -Wredundant-decls\
+		-O3 -fomit-frame-pointer -march=native
+	NISTFLAGS  = -Wno-unused-result -O3 -fomit-frame-pointer -march=native -std=c99 
 endif
 
 CLANG   = clang -march=native -O3 -fomit-frame-pointer -fwrapv -Qunused-arguments
@@ -20,7 +28,7 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/kem \
 
-SOURCES = pack_unpack.c poly.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c NTT.c base_multiplication.c
+SOURCES = pack_unpack.c poly.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c NTT.c base_multiplication.c reduce.c
 HEADERS = SABER_params.h pack_unpack.h poly.h rng.h fips202.h verify.h cbd.h SABER_indcpa.h
 
 test/test_kex: $(SOURCES) $(HEADERS) rng.o test/test_kex.c
